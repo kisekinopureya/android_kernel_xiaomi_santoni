@@ -226,7 +226,14 @@
 	msm8920-pmi8940-qrd-sku7.dtb \
 	msm8920-pmi8950-ext-codec-cdp.dtb
 
-dtb-$(CONFIG_ARCH_MSM8940) += msm8940-pmi8950-qrd-sku7_S88536AA2.dtb
+# Treble support
+ifeq ($(CONFIG_ARCH_MSM8940),y)
+ifeq ($(CONFIG_TREBLE),y)
+	dtb-$(CONFIG_TREBLE) += msm8940-pmi8950-qrd-sku7_S88536AA2-treble.dtb
+else
+	dtb-$(CONFIG_ARCH_MSM8940) += msm8940-pmi8950-qrd-sku7_S88536AA2.dtb
+endif
+endif
 	# Old manually created dtb.
 	#msm8940-pmi8950-qrd-sku7.dtb
 	# Extracted dtb

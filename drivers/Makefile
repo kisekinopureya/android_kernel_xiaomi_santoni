@@ -8,6 +8,7 @@
 obj-y				+= irqchip/
 obj-y				+= bus/
 
+#anbox
 obj-$(CONFIG_ANBOX) += anbox/
 
 obj-$(CONFIG_GENERIC_PHY)	+= phy/

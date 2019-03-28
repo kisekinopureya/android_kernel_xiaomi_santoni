@@ -1,6 +1,6 @@
 FROM ubuntu:xenial
 MAINTAINER bitrvmpd
-ARG WORKPSACE=/usr/src
+ARG WORKSPACE=/usr/src
 # if we want to install via apt
 RUN apt-get update --fix-missing
  

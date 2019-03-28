@@ -105,13 +105,19 @@ start=$SECONDS
 KBUILD_LOUP_CFLAGS="-Wno-misleading-indentation -Wno-bool-compare -mtune=cortex-a53 -march=armv8-a+crc+simd+crypto -mcpu=cortex-a53 -O2" 
 KBUILD_LOUP_CFLAGS=$KBUILD_LOUP_CFLAGS ARCH=arm64 SUBARCH=arm64 CROSS_COMPILE=$CROSS_COMPILE $MAKE_STATEMENT -j5
 
-# Get current kernel version
-LOUP_VERSION=$(head -n3 Makefile | sed -E 's/.*(^\w+\s[=]\s)//g' | xargs | sed -E 's/(\s)/./g')
-echo -e "\n\n> Packing Loup Kernel v$LOUP_VERSION\n\n"
-# Pack the kernel as a flashable TWRP zip. Nougat Edition
-$LOUP_WORKING_DIR/AnyKernel2/build.sh $LOUP_VERSION N
+if [ $? -eq 0 ]
+then
+  # Get current kernel version
+  LOUP_VERSION=$(head -n3 Makefile | sed -E 's/.*(^\w+\s[=]\s)//g' | xargs | sed -E 's/(\s)/./g')
+  echo -e "\n\n> Packing Loup Kernel v$LOUP_VERSION\n\n"
+  # Pack the kernel as a flashable TWRP zip. Nougat Edition
+  $LOUP_WORKING_DIR/AnyKernel2/build.sh $LOUP_VERSION N
 
-end=$SECONDS
-duration=$(( end - start ))
-printf "\n\033[0;33m> Completed in %dh:%dm:%ds\n" $(($duration/3600)) $(($duration%3600/60)) $(($duration%60))
-echo -e "=====================================\033[0;0m\n"
+  end=$SECONDS
+  duration=$(( end - start ))
+  printf "\n\033[0;33m> Completed in %dh:%dm:%ds\n" $(($duration/3600)) $(($duration%3600/60)) $(($duration%60))
+  echo -e "=====================================\033[0;0m\n"
+else
+  echo -e "\033[0;31m> Compilation failed, exiting...\033[0;0m\n"
+  exit 1
+fi

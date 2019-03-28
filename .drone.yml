@@ -29,7 +29,7 @@ steps:
   image: bitrvmpd/debian-build-kernel
   commands:
   - chmod +x build.sh
-  - ./build.sh
+  - ./build.sh --no-menuconfig
   environment:
     LOUP_WORKING_DIR: /usr/src
   volumes:

@@ -6,7 +6,7 @@ echo "#########################################"
 
 # Make statement declaration
 # ==========================
-# If compilation uses menuconfig, make operation will use .config 
+# If compilation uses menuconfig, make operation will use .config
 # instead of santoni_defconfig directly.
 MAKE_STATEMENT=make
 

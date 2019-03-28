@@ -12,7 +12,10 @@ MAKE_STATEMENT=make
 
 # ENV configuration
 # =================
-export LOUP_WORKING_DIR=$(dirname "$(pwd)")
+if [ -z "$LOUP_WORKING_DIR" ]
+then
+  export LOUP_WORKING_DIR=$(dirname "$(pwd)")
+fi
 
 
 # Menuconfig configuration

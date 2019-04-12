@@ -4,15 +4,27 @@ echo "#########################################"
 echo "##### LOUP Kernel - Build Script ########"
 echo "#########################################"
 
-# Make statement declaration
-# ==========================
-# If compilation uses menuconfig, make operation will use .config 
-# instead of santoni_defconfig directly.
-MAKE_STATEMENT=make
-
 # ENV configuration
 # =================
 export LOUP_WORKING_DIR=$(dirname "$(pwd)")
+
+
+# Kernel configuration file
+# =========================
+# Use -treble flag to start a compilation with treble support
+if [[ "$*" == *"-treble"* ]]
+then
+  CONFIG_FILE="./arch/arm64/configs/santoni_defconfig-treble"
+else
+  CONFIG_FILE="./arch/arm64/configs/santoni_defconfig"
+fi
+
+
+# Make statement declaration
+# ==========================
+# If compilation uses menuconfig, make operation will use .config 
+# instead of $CONFIG_FILE directly
+MAKE_STATEMENT=make
 
 
 # Menuconfig configuration
@@ -22,7 +34,7 @@ export LOUP_WORKING_DIR=$(dirname "$(pwd)")
 if [[ "$*" == *"-no-menuconfig"* ]]
 then
   NO_MENUCONFIG=1
-  MAKE_STATEMENT="$MAKE_STATEMENT KCONFIG_CONFIG=./arch/arm64/configs/santoni_defconfig"
+  MAKE_STATEMENT="$MAKE_STATEMENT KCONFIG_CONFIG=$CONFIG_FILE"
 fi
 
 
@@ -76,14 +88,14 @@ fi
 if [ -n "$NO_MENUCONFIG" ]
 then
   echo -e "> Skipping menuconfig...\n"
-  echo -e "> Starting kernel compilation using santoni_defconfig file directly...\n"
+  echo -e "> Starting kernel compilation using $CONFIG_FILE file directly...\n"
 else
   if [ -f ".config" ]
   then    
     echo -e "\033[0;32m> Config file already exists\033[0;0m\n"
   else
-    echo -e "\033[0;31m> Config file not found, copying santoni_defconfig as .config...\033[0;0m\n" 
-    cp arch/arm64/configs/santoni_defconfig .config
+    echo -e "\033[0;31m> Config file not found, copying $CONFIG_FILE as .config...\033[0;0m\n" 
+    cp $CONFIG_FILE .config
   fi
   echo -e "> Opening .config file...\n"
   ARCH=arm64 SUBARCH=arm64 CROSS_COMPILE=$CROSS_COMPILE make menuconfig

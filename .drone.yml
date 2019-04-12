@@ -1,0 +1,49 @@
+---
+kind: pipeline
+name: Loup Kernel O
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: Build docker image
+  build:
+    image: bitrvmpd/debian-build-kernel
+    context: .
+    dockerfile: Dockerfile
+
+- name: Sync dependencies
+  image: bitrvmpd/debian-build-kernel
+  commands:
+  - cd $LOUP_WORKING_DIR
+  - git clone https://github.com/bitrvmpd/aarch64-linux-android-7.x.git --depth=1
+  - git clone https://github.com/bitrvmpd/AnyKernel2.git --depth=1
+  environment:
+    LOUP_WORKING_DIR: /usr/src
+  volumes:
+  - name: cache
+    path: /usr/src
+
+- name: Build Kernel
+  image: bitrvmpd/debian-build-kernel
+  commands:
+  - chmod +x build.sh
+  - ./build.sh --no-menuconfig
+  environment:
+    LOUP_WORKING_DIR: /usr/src
+  volumes:
+  - name: cache
+    path: /usr/src
+
+volumes:
+- name: cache
+  temp: {}
+
+trigger:
+  branch:
+  - rel/msm-3.18-oreo
+  event:
+  - push
+
+...

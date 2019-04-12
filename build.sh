@@ -6,7 +6,10 @@ echo "#########################################"
 
 # ENV configuration
 # =================
-export LOUP_WORKING_DIR=$(dirname "$(pwd)")
+if [ -z "$LOUP_WORKING_DIR" ]
+then
+  export LOUP_WORKING_DIR=$(dirname "$(pwd)")
+fi
 
 
 # Kernel configuration file

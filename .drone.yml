@@ -19,6 +19,7 @@ steps:
   - cd $LOUP_WORKING_DIR
   - git clone https://github.com/bitrvmpd/aarch64-linux-android-7.x.git --depth=1
   - git clone https://github.com/bitrvmpd/AnyKernel2.git --depth=1
+  - echo "Testing"
   environment:
     LOUP_WORKING_DIR: /usr/src
   volumes:

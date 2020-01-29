@@ -1541,8 +1541,8 @@ static int smbchg_set_dc_current_max(struct smbchg_chip *chip, int current_ma)
 	chip->dc_max_current_ma = chip->tables.dc_ilim_ma_table[i];
 	dc_cur_val = i & DCIN_INPUT_MASK;
 
-	pr_smb(PR_STATUS, "dc current set to %d mA\n",
-			chip->dc_max_current_ma);
+	/*pr_smb(PR_STATUS, "dc current set to %d mA\n",
+			chip->dc_max_current_ma);*/
 	return smbchg_sec_masked_write(chip, chip->dc_chgpth_base + IL_CFG,
 				DCIN_INPUT_MASK, dc_cur_val);
 }
@@ -1712,7 +1712,7 @@ static int smbchg_set_usb_current_max(struct smbchg_chip *chip,
 				current_ma);
 		return 0;
 	}
-	pr_smb(PR_STATUS, "USB current_ma = %d\n", current_ma);
+	//pr_smb(PR_STATUS, "USB current_ma = %d\n", current_ma);
 
 	if (current_ma <= SUSPEND_CURRENT_MA) {
 		/* suspend the usb if current <= 2mA */
@@ -1851,8 +1851,8 @@ static int smbchg_set_usb_current_max(struct smbchg_chip *chip,
 	}
 
 out:
-	pr_smb(PR_STATUS, "usb type = %d current set to %d mA\n",
-			chip->usb_supply_type, chip->usb_max_current_ma);
+	/*pr_smb(PR_STATUS, "usb type = %d current set to %d mA\n",
+			chip->usb_supply_type, chip->usb_max_current_ma);*/
 	return rc;
 }
 
@@ -3240,9 +3240,9 @@ static int smbchg_calc_max_flash_current(struct smbchg_chip *chip)
 	 * before collapsing the battery. (available power/ flash input voltage)
 	 */
 	avail_flash_ua = div64_s64(avail_flash_power_fw, vin_flash_uv * MCONV);
-	pr_smb(PR_MISC,
+	/*pr_smb(PR_MISC,
 		"avail_iflash=%lld, ocv=%d, ibat=%d, rbatt=%d\n",
-		avail_flash_ua, ocv_uv, ibat_now, rbatt_uohm);
+		avail_flash_ua, ocv_uv, ibat_now, rbatt_uohm);*/
 	return (int)avail_flash_ua;
 }
 
@@ -5222,9 +5222,9 @@ static void increment_aicl_count(struct smbchg_chip *chip)
 	long elapsed_seconds;
 	unsigned long now_seconds;
 
-	pr_smb(PR_INTERRUPT, "aicl count c:%d dgltch:%d first:%ld\n",
+	/*pr_smb(PR_INTERRUPT, "aicl count c:%d dgltch:%d first:%ld\n",
 			chip->aicl_irq_count, chip->aicl_deglitch_short,
-			chip->first_aicl_seconds);
+			chip->first_aicl_seconds);*/
 
 	rc = smbchg_read(chip, &reg,
 			chip->usb_chgpth_base + ICL_STS_1_REG, 1);
@@ -6203,8 +6203,8 @@ static void smbchg_external_power_changed(struct power_supply *psy)
 	if (usb_supply_type != POWER_SUPPLY_TYPE_USB)
 		goto  skip_current_for_non_sdp;
 
-	pr_smb(PR_MISC, "usb type = %s current_limit = %d\n",
-			usb_type_name, current_limit);
+	/*pr_smb(PR_MISC, "usb type = %s current_limit = %d\n",
+			usb_type_name, current_limit);*/
 
 	rc = vote(chip->usb_icl_votable, PSY_ICL_VOTER, true,
 				current_limit);
@@ -7121,7 +7121,7 @@ static irqreturn_t aicl_done_handler(int irq, void *_chip)
 	bool usb_present = is_usb_present(chip);
 	int aicl_level = smbchg_get_aicl_level_ma(chip);
 
-	pr_smb(PR_INTERRUPT, "triggered, aicl: %d\n", aicl_level);
+	//pr_smb(PR_INTERRUPT, "triggered, aicl: %d\n", aicl_level);
 
 	increment_aicl_count(chip);
 
@@ -8596,11 +8596,11 @@ static void period_update(struct work_struct *work)
 	printk_counter++;
 	if ((period_ms >= 500) || (abs(temp-old_temp) >= 1) || (old_cap != cap) || (old_status != status)
 			|| (old_present != present) || (old_usb_present != usb_present) || (printk_counter >= 5)) {
-		pr_info("***temp=%d,vol=%d,cap=%d,status=%d,chg_state=%d,current=%d,present=%d,usb_present=%d\n",
-				temp, voltage, cap, status, charge_type, chg_current, present, usb_present);
+		/*pr_info("***temp=%d,vol=%d,cap=%d,status=%d,chg_state=%d,current=%d,present=%d,usb_present=%d\n",
+				temp, voltage, cap, status, charge_type, chg_current, present, usb_present);*/
 
-		pr_info("***present=%d,usb_present=%d,usb_current=%d, Vbus=%d\n",
-				present, usb_present, usb_current, vbus);
+		/*pr_info("***present=%d,usb_present=%d,usb_current=%d, Vbus=%d\n",
+				present, usb_present, usb_current, vbus);*/
 
 
 		old_temp = temp;

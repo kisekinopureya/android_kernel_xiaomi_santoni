@@ -274,6 +274,10 @@ typedef struct sLimMlmAssocInd
     tANI_U32             assocReqLength;
     tANI_U8*             assocReqPtr;
     uint32_t             rate_flags;
+    tSirSmeChanInfo      chan_info;
+    tSirMacHTChannelWidth ch_width;
+    tDot11fIEHTCaps HTCaps;
+    tDot11fIEVHTCaps VHTCaps;
 } tLimMlmAssocInd, *tpLimMlmAssocInd;
 
 typedef struct sLimMlmReassocReq
@@ -707,10 +711,7 @@ void limSendAssocRspMgmtFrame(tpAniSirGlobal, tANI_U16, tANI_U16, tSirMacAddr,
 void limSendNullDataFrame(tpAniSirGlobal, tpDphHashNode);
 void limSendDisassocMgmtFrame(tpAniSirGlobal, tANI_U16, tSirMacAddr, tpPESession, tANI_BOOLEAN waitForAck);
 void limSendDeauthMgmtFrame(tpAniSirGlobal, tANI_U16, tSirMacAddr, tpPESession, tANI_BOOLEAN waitForAck);
-void limSendSmeDisassocDeauthNtf( tpAniSirGlobal pMac,
-                                eHalStatus status, tANI_U32 *pCtx );
 void limDoSendAuthMgmtFrame(tpAniSirGlobal, tpPESession);
-
 void limContinueChannelScan(tpAniSirGlobal);
 tSirResultCodes limMlmAddBss(tpAniSirGlobal, tLimMlmStartReq *,tpPESession psessionEntry);
 
@@ -1129,6 +1130,18 @@ tSirRetStatus lim_process_sme_get_tsf_req(tpAniSirGlobal pMac,
 
 tSirRetStatus lim_process_sme_del_ba_ses_req(tpAniSirGlobal pMac,
                                              tANI_U32 *pMsgBuf);
+/**
+ * lim_send_chan_switch_action_frame() - send channel switch action frame to all
+ * connected peers
+ * @mac_ctx: Pointer to Global MAC structure
+ * @new_channel: new channel
+ * @session_entry: ap session
+ *
+ * Return: None
+ */
+void lim_send_chan_switch_action_frame(tpAniSirGlobal mac_ctx,
+     uint16_t new_channel, tpPESession session_entry);
+
 
 #endif /* __LIM_TYPES_H */
 
